@@ -9,13 +9,13 @@ import com.github.zxh.classpy.ibd.page.base.ListBaseNode;
  * 段由一些零散的页(fragArrEntries)和一些完整的区(3个ListBaseNode)组成，在物理上并不连续
  */
 public class INodeEntry extends TableSpacePart {
-    {
-        u8hex("segmentId");
-        u4hex("NOT_FULL_N_USED");
-        part("freeList", ListBaseNode.class);
-        part("notFullList",ListBaseNode.class);
-        part("fullList",ListBaseNode.class);
-        u4hex("magicNum");
-        partList("fragArrEntries", U4.class,32);
-    }
+  {
+    u8hex("segmentId");
+    u4hex("NOT_FULL_N_USED");
+    part("freeList", ListBaseNode.class);
+    part("notFullList", ListBaseNode.class);
+    part("fullList", ListBaseNode.class);
+    u4hex("magicNum");
+    partList("fragArrEntries", U4.class, 32);
+  }
 }

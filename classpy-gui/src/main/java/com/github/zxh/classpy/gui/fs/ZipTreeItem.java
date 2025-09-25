@@ -9,34 +9,34 @@ import java.util.stream.Collectors;
 
 public class ZipTreeItem extends TreeItem<ZipTreeNode> {
 
-    private boolean isFirstTimeChildren = true;
+  private boolean isFirstTimeChildren = true;
 
-    public ZipTreeItem(ZipTreeNode root) {
-        super(root);
+  public ZipTreeItem(ZipTreeNode root) {
+    super(root);
+  }
+
+  @Override
+  public boolean isLeaf() {
+    return !getValue().hasSubNodes();
+  }
+
+  @Override
+  public ObservableList<TreeItem<ZipTreeNode>> getChildren() {
+    if (isFirstTimeChildren) {
+      isFirstTimeChildren = false;
+      System.out.println("get children of " + getValue());
+      super.getChildren().setAll(buildChildren());
     }
 
-    @Override
-    public boolean isLeaf() {
-        return !getValue().hasSubNodes();
-    }
+    return super.getChildren();
+  }
 
-    @Override
-    public ObservableList<TreeItem<ZipTreeNode>> getChildren() {
-        if (isFirstTimeChildren) {
-            isFirstTimeChildren = false;
-            System.out.println("get children of " + getValue());
-            super.getChildren().setAll(buildChildren());
-        }
+  private ObservableList<TreeItem<ZipTreeNode>> buildChildren() {
+    List<ZipTreeItem> items = getValue().subNodes.stream()
+      .map(ZipTreeItem::new)
+      .collect(Collectors.toList());
 
-        return super.getChildren();
-    }
-
-    private ObservableList<TreeItem<ZipTreeNode>> buildChildren() {
-        List<ZipTreeItem> items = getValue().subNodes.stream()
-                .map(ZipTreeItem::new)
-                .collect(Collectors.toList());
-
-        return FXCollections.observableArrayList(items);
-    }
+    return FXCollections.observableArrayList(items);
+  }
 
 }

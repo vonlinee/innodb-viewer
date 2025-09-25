@@ -8,50 +8,50 @@ import java.util.function.Consumer;
 
 public class DirTreeView {
 
-    private final TreeView<DirTreeNode> treeView;
-    private Consumer<File> openFileHandler;
+  private final TreeView<DirTreeNode> treeView;
+  private Consumer<File> openFileHandler;
 
-    public DirTreeView(DirTreeNode rootNode) {
-        this.treeView = createTreeView(rootNode);
-    }
+  public DirTreeView(DirTreeNode rootNode) {
+    this.treeView = createTreeView(rootNode);
+  }
 
-    public TreeView<DirTreeNode> getTreeView() {
-        return treeView;
-    }
+  public static DirTreeView create(File dir) {
+    return new DirTreeView(new DirTreeNode(dir.toPath()));
+  }
 
-    public void setOpenFileHandler(Consumer<File> openFileHandler) {
-        this.openFileHandler = openFileHandler;
-    }
+  public TreeView<DirTreeNode> getTreeView() {
+    return treeView;
+  }
 
-    private TreeView<DirTreeNode> createTreeView(DirTreeNode rootNode) {
-        DirTreeItem rootItem = new DirTreeItem(rootNode);
-        rootItem.setExpanded(false);
+  public void setOpenFileHandler(Consumer<File> openFileHandler) {
+    this.openFileHandler = openFileHandler;
+  }
 
-        TreeView<DirTreeNode> tree = new TreeView<>(rootItem);
-        tree.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) {
-                File selectedFile = getSelectedFile();
-                if (selectedFile != null && openFileHandler != null) {
-                    System.out.println(selectedFile);
-                    openFileHandler.accept(selectedFile);
-                }
-            }
-        });
+  private TreeView<DirTreeNode> createTreeView(DirTreeNode rootNode) {
+    DirTreeItem rootItem = new DirTreeItem(rootNode);
+    rootItem.setExpanded(false);
 
-        return tree;
-    }
-
-    private File getSelectedFile() {
-        TreeItem<DirTreeNode> selectedItem = treeView.getSelectionModel().getSelectedItem();
-        if (selectedItem != null) {
-            DirTreeNode selectedPath = selectedItem.getValue();
-            return selectedPath.path.toFile();
+    TreeView<DirTreeNode> tree = new TreeView<>(rootItem);
+    tree.setOnMouseClicked(event -> {
+      if (event.getClickCount() == 2) {
+        File selectedFile = getSelectedFile();
+        if (selectedFile != null && openFileHandler != null) {
+          System.out.println(selectedFile);
+          openFileHandler.accept(selectedFile);
         }
-        return null;
-    }
+      }
+    });
 
-    public static DirTreeView create(File dir) {
-        return new DirTreeView(new DirTreeNode(dir.toPath()));
+    return tree;
+  }
+
+  private File getSelectedFile() {
+    TreeItem<DirTreeNode> selectedItem = treeView.getSelectionModel().getSelectedItem();
+    if (selectedItem != null) {
+      DirTreeNode selectedPath = selectedItem.getValue();
+      return selectedPath.path.toFile();
     }
+    return null;
+  }
 
 }

@@ -7,31 +7,32 @@ import com.github.zxh.classpy.ibd.page.index.IndexPageHeader;
 
 
 public class RecordContainer extends TableSpacePart {
-    private final FileHeader fileHeader;
-    private final IndexPageHeader pageHeader;
+  private final FileHeader fileHeader;
+  private final IndexPageHeader pageHeader;
 
-    public RecordContainer(FileHeader fileHeader, IndexPageHeader pageHeader) {
-        this.fileHeader = fileHeader;
-        this.pageHeader = pageHeader;
-    }
-    @Override
-    protected void readContent(TableSpaceReader reader) {
-        Integer global = getGlobalFreeOffset();
-        Integer skip = global - reader.getPosition();
+  public RecordContainer(FileHeader fileHeader, IndexPageHeader pageHeader) {
+    this.fileHeader = fileHeader;
+    this.pageHeader = pageHeader;
+  }
 
-    }
+  @Override
+  protected void readContent(TableSpaceReader reader) {
+    Integer global = getGlobalFreeOffset();
+    Integer skip = global - reader.getPosition();
 
-    private Integer getGlobalFreeOffset() {
-        //获得页号
-        FilePart filePart = fileHeader.getParts().get(1);
-        Integer pageNum = ((UInt)filePart).getValue();
+  }
 
-        //获得record的接收的第一个字节的偏移量
-        filePart = pageHeader.getParts().get(2);
-        Integer pageHeapTop = ((UInt)filePart).getValue();
+  private Integer getGlobalFreeOffset() {
+    //获得页号
+    FilePart filePart = fileHeader.getParts().get(1);
+    Integer pageNum = ((UInt) filePart).getValue();
 
-        Integer global = pageNum * Constant.PAGE_SIZE + pageHeapTop;
+    //获得record的接收的第一个字节的偏移量
+    filePart = pageHeader.getParts().get(2);
+    Integer pageHeapTop = ((UInt) filePart).getValue();
 
-        return global;
-    }
+    Integer global = pageNum * Constant.PAGE_SIZE + pageHeapTop;
+
+    return global;
+  }
 }

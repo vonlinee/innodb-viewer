@@ -18,10 +18,10 @@ import com.github.zxh.classpy.ibd.TableSpacePart;
  *
  */
 public class SysRecord extends TableSpacePart {
-    {
-        bytes("Flags&Records Owned",1);
-        bytes("Order&type",2);
-        u2hex("nextOffset");
-        u8("value");
-    }
+  {
+    bytes("Flags&Records Owned", 1);
+    bytes("Order&type", 2);
+    u2hex("nextOffset");
+    u8("value");
+  }
 }

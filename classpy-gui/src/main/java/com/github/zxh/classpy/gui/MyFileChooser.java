@@ -10,33 +10,33 @@ import java.io.File;
 
 public class MyFileChooser {
 
-    private static FileChooser fileChooser;
-    private static DirectoryChooser dirChooser;
+  private static FileChooser fileChooser;
+  private static DirectoryChooser dirChooser;
 
-    public static File showFileChooser(Stage stage, FileType ft) {
-        if (fileChooser == null) {
-            fileChooser = new FileChooser();
-            fileChooser.setTitle("Open file");
-        }
-
-        File lastOpenFile = RecentFiles.INSTANCE.getLastOpenFile(ft);
-        if (lastOpenFile != null && lastOpenFile.getParentFile().isDirectory()) {
-            fileChooser.setInitialDirectory(lastOpenFile.getParentFile());
-        }
-
-        fileChooser.getExtensionFilters().clear();
-        fileChooser.getExtensionFilters().add(ft.filter);
-
-        return fileChooser.showOpenDialog(stage);
+  public static File showFileChooser(Stage stage, FileType ft) {
+    if (fileChooser == null) {
+      fileChooser = new FileChooser();
+      fileChooser.setTitle("Open file");
     }
 
-    public static File showDirChooser(Stage stage) {
-        if (dirChooser == null) {
-            dirChooser = new DirectoryChooser();
-            dirChooser.setTitle("Open folder");
-        }
-
-        return dirChooser.showDialog(stage);
+    File lastOpenFile = RecentFiles.INSTANCE.getLastOpenFile(ft);
+    if (lastOpenFile != null && lastOpenFile.getParentFile().isDirectory()) {
+      fileChooser.setInitialDirectory(lastOpenFile.getParentFile());
     }
+
+    fileChooser.getExtensionFilters().clear();
+    fileChooser.getExtensionFilters().add(ft.filter);
+
+    return fileChooser.showOpenDialog(stage);
+  }
+
+  public static File showDirChooser(Stage stage) {
+    if (dirChooser == null) {
+      dirChooser = new DirectoryChooser();
+      dirChooser.setTitle("Open folder");
+    }
+
+    return dirChooser.showDialog(stage);
+  }
 
 }

@@ -2,61 +2,55 @@ package com.github.zxh.classpy.gui.support;
 
 import com.github.zxh.classpy.common.FilePart;
 import com.github.zxh.classpy.gui.parsed.HexText;
-import com.github.zxh.classpy.gui.fs.ZipTreeLoader;
-import com.github.zxh.classpy.gui.fs.ZipTreeNode;
-import com.github.zxh.classpy.helper.StringHelper;
 import com.github.zxh.classpy.helper.UrlHelper;
-
-import java.io.File;
-import java.net.URL;
-import java.util.function.Consumer;
-
 import javafx.concurrent.Task;
+
+import java.util.function.Consumer;
 
 public class OpenFileTask extends Task<OpenFileResult> {
 
-    private final String url;
+  private final String url;
 
-    public OpenFileTask(String url) {
-        this.url = url;
+  public OpenFileTask(String url) {
+    this.url = url;
+  }
+
+  @Override
+  protected OpenFileResult call() throws Exception {
+    System.out.println("loading " + url + "...");
+
+    FileType fileType = FileTypeInferer.inferFileType(url);
+
+    byte[] data = UrlHelper.readData(url);
+    if (fileType == FileType.UNKNOWN) {
+      fileType = FileTypeInferer.inferFileType(data);
     }
 
-    @Override
-    protected OpenFileResult call() throws Exception {
-        System.out.println("loading " + url + "...");
+    System.out.println("parsing " + url + "...");
+    FilePart fc = fileType.parser.parse(data);
+    fc.setName(UrlHelper.getFileName(url));
+    HexText hex = new HexText(data);
 
-        FileType fileType = FileTypeInferer.inferFileType(url);
+    System.out.println("finish loading");
+    return new OpenFileResult(url, fileType, fc, hex);
+  }
 
-        byte[] data = UrlHelper.readData(url);
-        if (fileType == FileType.UNKNOWN) {
-            fileType = FileTypeInferer.inferFileType(data);
-        }
+  public void setOnSucceeded(Consumer<OpenFileResult> callback) {
+    super.setOnSucceeded(
+      e -> callback.accept((OpenFileResult) e.getSource().getValue()));
+  }
 
-        System.out.println("parsing " + url + "...");
-        FilePart fc = fileType.parser.parse(data);
-        fc.setName(UrlHelper.getFileName(url));
-        HexText hex = new HexText(data);
+  public void setOnFailed(Consumer<Throwable> callback) {
+    super.setOnFailed(event -> {
+      Throwable err = event.getSource().getException();
+      err.printStackTrace(System.err);
 
-        System.out.println("finish loading");
-        return new OpenFileResult(url, fileType, fc, hex);
-    }
+      callback.accept(err);
+    });
+  }
 
-    public void setOnSucceeded(Consumer<OpenFileResult> callback) {
-        super.setOnSucceeded(
-                e -> callback.accept((OpenFileResult) e.getSource().getValue()));
-    }
-
-    public void setOnFailed(Consumer<Throwable> callback) {
-        super.setOnFailed(event -> {
-            Throwable err = event.getSource().getException();
-            err.printStackTrace(System.err);
-
-            callback.accept(err);
-        });
-    }
-
-    public void startInNewThread() {
-        new Thread(this).start();
-    }
+  public void startInNewThread() {
+    new Thread(this).start();
+  }
 
 }

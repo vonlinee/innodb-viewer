@@ -7,27 +7,27 @@ import java.util.List;
 
 public class ZipTreeNode extends BaseTreeNode {
 
-    List<ZipTreeNode> subNodes;
+  List<ZipTreeNode> subNodes;
 
-    public ZipTreeNode(Path path) {
-        super(path);
-    }
+  public ZipTreeNode(Path path) {
+    super(path);
+  }
 
-    boolean hasSubNodes() {
-        return subNodes != null && !subNodes.isEmpty();
-    }
+  boolean hasSubNodes() {
+    return subNodes != null && !subNodes.isEmpty();
+  }
 
-    void addSubNode(ZipTreeNode node) {
-        if (subNodes == null) {
-            subNodes = new ArrayList<>();
-        }
-        subNodes.add(node);
+  void addSubNode(ZipTreeNode node) {
+    if (subNodes == null) {
+      subNodes = new ArrayList<>();
     }
+    subNodes.add(node);
+  }
 
-    void sortSubNodes() {
-        if (subNodes != null) {
-            Collections.sort(subNodes);
-        }
+  void sortSubNodes() {
+    if (subNodes != null) {
+      Collections.sort(subNodes);
     }
+  }
 
 }

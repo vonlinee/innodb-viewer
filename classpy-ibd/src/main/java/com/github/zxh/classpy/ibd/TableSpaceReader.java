@@ -7,8 +7,8 @@ import java.nio.ByteOrder;
 public class TableSpaceReader extends BytesReader {
 
 
-    public TableSpaceReader(byte[] data) {
-        super(data, ByteOrder.BIG_ENDIAN);
-    }
+  public TableSpaceReader(byte[] data) {
+    super(data, ByteOrder.BIG_ENDIAN);
+  }
 
 }

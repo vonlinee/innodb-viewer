@@ -8,15 +8,15 @@ import com.github.zxh.classpy.ibd.TableSpaceReader;
  */
 public class Bytes extends TableSpacePart {
 
-    private Integer count;
+  private Integer count;
 
-    public Bytes(Integer count) {
-        this.count = count;
-    }
+  public Bytes(Integer count) {
+    this.count = count;
+  }
 
-    @Override
-    protected void readContent(TableSpaceReader reader) {
-        reader.skipBytes(count);
-    }
+  @Override
+  protected void readContent(TableSpaceReader reader) {
+    reader.skipBytes(count);
+  }
 
 }

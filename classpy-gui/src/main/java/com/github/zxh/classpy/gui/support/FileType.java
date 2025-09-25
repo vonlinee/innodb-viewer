@@ -11,26 +11,26 @@ import javafx.stage.FileChooser.ExtensionFilter;
  */
 public enum FileType {
 
-    FOLDER       ("/folder.png",  "Folder",              "/",       null),
-    IBD   ("/ibd16.png",    "IBD",          "*.ibd", new TableSpaceParser()),
-    IBDATA   ("/ibd16.png",    "ibdata",          "*.*", new SysTableSpaceParser()),
-    UNKNOWN      ("/file.png",    "Unknown",             "*.*",     FileParser.NOP),
-    ;
+  FOLDER("/folder.png", "Folder", "/", null),
+  IBD("/ibd16.png", "IBD", "*.ibd", new TableSpaceParser()),
+  IBDATA("/ibd16.png", "ibdata", "*.*", new SysTableSpaceParser()),
+  UNKNOWN("/file.png", "Unknown", "*.*", FileParser.NOP),
+  ;
 
-    public final Image icon;
-    public final ExtensionFilter filter;
-    public final FileParser parser;
+  public final Image icon;
+  public final ExtensionFilter filter;
+  public final FileParser parser;
 
-    FileType(String icon,
-             String description,
-             String extension,
-             FileParser parser) {
-        this.icon = ImageHelper.loadImage(icon);
-        this.filter = new ExtensionFilter(description, extension);
-        this.parser = parser;
-    }
+  FileType(String icon,
+           String description,
+           String extension,
+           FileParser parser) {
+    this.icon = ImageHelper.loadImage(icon);
+    this.filter = new ExtensionFilter(description, extension);
+    this.parser = parser;
+  }
 
-    public boolean isIbdOrIbdata() {
-        return this == IBD || this == IBDATA;
-    }
+  public boolean isIbdOrIbdata() {
+    return this == IBD || this == IBDATA;
+  }
 }

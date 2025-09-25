@@ -5,8 +5,8 @@ package com.github.zxh.classpy.ibd.datatype;
  */
 public class I2Hex extends UInt {
 
-    public I2Hex() {
-        super(READ_I2, TO_HEX);
-    }
+  public I2Hex() {
+    super(READ_I2, TO_HEX);
+  }
 
 }
